@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/server";
 export const metadata = { title: "Profile — Kanta" };
 
 export default async function AccountPage() {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) redirect("/login");
   const supabase = await createClient();
   const { data } = await supabase.auth.getUser();
   if (!data.user) redirect("/login?next=/account");

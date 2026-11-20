@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Sans, Fraunces } from "next/font/google";
+import { AuthHashErrorRedirect } from "@/components/kanta/AuthHashErrorRedirect";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -33,7 +34,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en-GH" className={`${fraunces.variable} ${dmSans.variable}`}>
-      <body>{children}</body>
+      <body>
+        <AuthHashErrorRedirect />
+        {children}
+      </body>
     </html>
   );
 }

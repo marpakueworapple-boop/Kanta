@@ -30,7 +30,11 @@ export function LoginForm({ next = "/account" }: { next?: string }) {
     });
     if (error) {
       setStatus("error");
-      setMessage(error.message);
+      setMessage(
+        error.status === 429 || /rate limit/i.test(error.message)
+          ? "Too many sign-in emails were sent in a short time. Please wait a few minutes and try again, and use the newest email you received."
+          : error.message,
+      );
     } else {
       setStatus("sent");
     }
@@ -44,8 +48,8 @@ export function LoginForm({ next = "/account" }: { next?: string }) {
         </span>
         <h2 className="t-h2 text-ink">Check your email</h2>
         <p className="t-body text-muted">
-          We sent a sign-in link to <strong className="text-ink">{email}</strong>. Open it on this phone to
-          continue.
+          We sent a sign-in link to <strong className="text-ink">{email}</strong>. Open the newest email and tap
+          the link — each link works once.
         </p>
         <button type="button" onClick={() => setStatus("idle")} className="t-label text-forest underline">
           Use a different email

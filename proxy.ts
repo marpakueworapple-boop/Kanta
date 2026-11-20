@@ -6,6 +6,25 @@ import { NextResponse, type NextRequest } from "next/server";
   (Supabase sign-in tokens expire, and this quietly renews them).
 */
 export async function proxy(request: NextRequest) {
+  // If Supabase could not use our requested return address, it sends the sign-in
+  // code (or token hash) to the Site URL instead — usually the homepage, where nothing
+  // reads it. Forward it to the right sign-in route so the session is still created.
+  const { pathname, searchParams } = request.nextUrl;
+  if (!pathname.startsWith("/auth/")) {
+    if (searchParams.has("token_hash") && searchParams.has("type")) {
+      const to = request.nextUrl.clone();
+      to.pathname = "/auth/confirm";
+      if (!to.searchParams.has("next")) to.searchParams.set("next", "/account");
+      return NextResponse.redirect(to);
+    }
+    if (searchParams.has("code")) {
+      const to = request.nextUrl.clone();
+      to.pathname = "/auth/callback";
+      if (!to.searchParams.has("next")) to.searchParams.set("next", "/account");
+      return NextResponse.redirect(to);
+    }
+  }
+
   let response = NextResponse.next({ request });
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;

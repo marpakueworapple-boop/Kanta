@@ -1,8 +1,24 @@
+import { redirect } from "next/navigation";
 import { AppShell } from "@/components/kanta/AppShell";
 import { Logo } from "@/components/kanta/Logo";
+import { safeNext } from "@/lib/auth/safe-next";
+import { createClient } from "@/lib/supabase/server";
 import { LoginForm } from "./LoginForm";
 
 export const metadata = { title: "Sign in — Kanta" };
+
+/** Plain-language explanations for the reasons a sign-in link can fail. */
+function errorMessage(code: string): string {
+  switch (code) {
+    case "otp_expired":
+    case "access_denied":
+      return "That sign-in link has expired or was already used. Each link works once — please request a new one.";
+    case "other_browser":
+      return "Please open the sign-in link in the same browser you used to request it, or request a new link.";
+    default:
+      return "That sign-in link didn't work. Please request a new one.";
+  }
+}
 
 export default async function LoginPage({
   searchParams,
@@ -10,7 +26,14 @@ export default async function LoginPage({
   searchParams: Promise<{ next?: string; error?: string }>;
 }) {
   const { next, error } = await searchParams;
-  const safeNext = next && next.startsWith("/") && !next.startsWith("//") ? next : "/account";
+  const destination = safeNext(next);
+
+  // Already signed in? Go straight to the profile (or wherever they were heading).
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
+    const supabase = await createClient();
+    const { data } = await supabase.auth.getUser();
+    if (data.user) redirect(destination);
+  }
 
   return (
     <AppShell withNav={false}>
@@ -22,10 +45,10 @@ export default async function LoginPage({
         </div>
         {error && (
           <p role="alert" className="t-cap rounded-md bg-clay/10 px-3 py-2 text-clay">
-            That sign-in link didn&apos;t work or has expired. Please request a new one.
+            {errorMessage(error)}
           </p>
         )}
-        <LoginForm next={safeNext} />
+        <LoginForm next={destination} />
       </div>
     </AppShell>
   );

@@ -19,16 +19,16 @@ export function ProductCard({ product, priority = false }: { product: Product; p
   const b = badge[product.sellerType];
 
   return (
-    <article className="flex w-full flex-col gap-3">
+    <article className="group flex w-full flex-col gap-3">
       <div className="relative aspect-[171/214] w-full overflow-hidden rounded-lg bg-sand">
         <Image
           src={product.image}
           alt={product.name}
           fill
-          sizes="(max-width: 480px) 50vw, 220px"
+          sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 300px"
           placeholder="blur"
           priority={priority}
-          className="object-cover"
+          className="object-cover transition duration-500 md:group-hover:scale-[1.03]"
         />
         <span className={`t-over absolute top-2.5 left-2.5 rounded-[6px] px-2 py-[5px] ${b.className}`}>
           {b.label}

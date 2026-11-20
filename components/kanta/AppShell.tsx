@@ -1,13 +1,27 @@
 import { BottomNav } from "./BottomNav";
+import { Footer } from "./Footer";
 
 /**
-  The phone-width column every customer screen sits in.
-  On a laptop it stays centred at phone width for Stage 1; the wider laptop layout comes in Stage 2.
+  The frame every customer screen sits in.
+  - Phones: the approved mobile layout, with the bottom navigation bar.
+  - Tablets and laptops (768px and wider): full-width pages, top navigation in the header,
+    a footer, and no bottom bar.
 */
-export function AppShell({ children, withNav = true }: { children: React.ReactNode; withNav?: boolean }) {
+export function AppShell({
+  children,
+  withNav = true,
+  withFooter = true,
+}: {
+  children: React.ReactNode;
+  withNav?: boolean;
+  withFooter?: boolean;
+}) {
   return (
-    <div className="mx-auto min-h-dvh w-full max-w-[480px] bg-cream shadow-[0_0_40px_rgba(23,22,20,0.06)]">
-      <main className={withNav ? "pb-32" : "pb-10"}>{children}</main>
+    <div className="flex min-h-dvh w-full flex-col bg-cream">
+      <main className="flex-1">{children}</main>
+      {withFooter && <Footer />}
+      {/* Space so the fixed bottom bar never covers content on phones */}
+      {withNav && <div aria-hidden="true" className="h-32 md:hidden" />}
       {withNav && <BottomNav />}
     </div>
   );

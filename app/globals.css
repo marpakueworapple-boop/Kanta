@@ -36,6 +36,23 @@
   --radius-xl: 20px;
 }
 
+/*
+  Page container — one width rule for every screen.
+  Phones: 20px side margins (exactly as in Figma). Tablets: 32px. Laptops: 40px, content capped at 1280px.
+*/
+@utility k-container {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1280px;
+  padding-inline: 20px;
+  @media (width >= 48rem) {
+    padding-inline: 32px;
+  }
+  @media (width >= 64rem) {
+    padding-inline: 40px;
+  }
+}
+
 /* Text styles — same names and values as the Figma text styles */
 @layer components {
   .t-logo { font-family: var(--font-display); font-weight: 600; font-size: 26px; line-height: 30px; letter-spacing: -0.02em; }

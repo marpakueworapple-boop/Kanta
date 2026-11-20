@@ -36,9 +36,9 @@ export function BottomNav() {
   return (
     <nav
       aria-label="Main"
-      className="fixed inset-x-0 bottom-0 z-40 mx-auto w-full max-w-[480px] border-t border-line bg-white px-3.5 pt-2.5 pb-[max(14px,env(safe-area-inset-bottom))] shadow-[0_-4px_20px_rgba(23,22,20,0.06)]"
+      className="fixed inset-x-0 bottom-0 z-40 w-full border-t border-line bg-white px-3.5 pt-2.5 pb-[max(14px,env(safe-area-inset-bottom))] shadow-[0_-4px_20px_rgba(23,22,20,0.06)] md:hidden"
     >
-      <ul className="flex items-end justify-between">
+      <ul className="mx-auto flex max-w-[480px] items-end justify-between">
         {left.map((item) => (
           <li key={item.href}>
             <NavItem item={item} active={isActive(item.href)} />

@@ -19,7 +19,11 @@ const filters: { key: Filter; label: string }[] = [
 /** The seller-type chips and the "Fresh finds" grid share state, so tapping a chip filters the grid. */
 export function SellerTypeChips({ value, onChange }: { value: Filter; onChange: (f: Filter) => void }) {
   return (
-    <div className="no-scrollbar -mx-5 flex gap-2 overflow-x-auto px-5" role="group" aria-label="Seller type">
+    <div
+      className="no-scrollbar -mx-5 flex gap-2 overflow-x-auto px-5 md:mx-0 md:flex-wrap md:overflow-visible md:px-0"
+      role="group"
+      aria-label="Seller type"
+    >
       {filters.map((f) => (
         <Chip key={f.key} label={f.label} active={value === f.key} onClick={() => onChange(f.key)} />
       ))}
@@ -35,26 +39,27 @@ export function HomeBody({ products, middle }: { products: Product[]; middle: Re
   const [filter, setFilter] = useState<Filter>("all");
   return (
     <>
-      <div className="px-5 pt-4">
+      <div className="k-container pt-4 md:pt-6">
         <SellerTypeChips value={filter} onChange={setFilter} />
       </div>
       {middle}
-      <div className="px-5 pt-8">
+      <div className="k-container pt-8 md:pt-14">
         <FreshFinds products={products} filter={filter} />
       </div>
     </>
   );
 }
 
+/** Product grid: 2 columns on phones, 3 on tablets, 4 on laptops and desktops. */
 export function FreshFinds({ products, filter }: { products: Product[]; filter: Filter }) {
   const shown = filter === "all" ? products : products.filter((p) => p.sellerType === filter);
 
   return (
-    <section aria-labelledby="fresh-finds" className="flex flex-col gap-4">
+    <section aria-labelledby="fresh-finds" className="flex flex-col gap-4 md:gap-6">
       <div id="fresh-finds">
         <SectionHeader title="Fresh finds" />
       </div>
-      <div className="grid grid-cols-2 gap-x-2 gap-y-6">
+      <div className="grid grid-cols-2 gap-x-2 gap-y-6 md:grid-cols-3 md:gap-x-5 md:gap-y-10 lg:grid-cols-4 lg:gap-x-6">
         {shown.map((p, i) => (
           <ProductCard key={p.id} product={p} priority={i < 2} />
         ))}

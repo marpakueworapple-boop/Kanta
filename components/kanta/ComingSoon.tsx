@@ -8,7 +8,7 @@ export function ComingSoon({ title, stage, icon }: { title: string; stage: numbe
   return (
     <AppShell>
       <Header />
-      <section className="flex flex-col items-center gap-4 px-8 pt-24 text-center">
+      <section className="k-container flex max-w-xl flex-col items-center gap-4 pt-24 text-center md:pt-32">
         <span className="flex size-16 items-center justify-center rounded-full border border-line bg-white text-forest">
           <Icon name={icon} size={28} />
         </span>

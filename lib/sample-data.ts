@@ -8,6 +8,7 @@ export type { SellerType } from "./catalog-types";
 
 export const sampleProducts: CardProduct[] = [
   {
+    id: "sample-1",
     slug: "vintage-washed-denim-jacket",
     title: "Vintage Washed Denim Jacket",
     shopName: "Kantamanto Finds",
@@ -19,6 +20,7 @@ export const sampleProducts: CardProduct[] = [
     soldOut: false,
   },
   {
+    id: "sample-2",
     slug: "kente-trim-linen-shirt",
     title: "Kente-Trim Linen Shirt",
     shopName: "Studio Adinkra",
@@ -30,6 +32,7 @@ export const sampleProducts: CardProduct[] = [
     soldOut: false,
   },
   {
+    id: "sample-3",
     slug: "tan-leather-saddle-bag",
     title: "Tan Leather Saddle Bag",
     shopName: "Osu Boutique",

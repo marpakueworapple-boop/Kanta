@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Sans, Fraunces } from "next/font/google";
 import { AuthHashErrorRedirect } from "@/components/kanta/AuthHashErrorRedirect";
+import { FavouritesProvider } from "@/components/kanta/Favourites";
+import { getFavouritesState } from "@/lib/favourites";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -31,12 +33,15 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const favourites = await getFavouritesState();
   return (
     <html lang="en-GH" className={`${fraunces.variable} ${dmSans.variable}`}>
       <body>
         <AuthHashErrorRedirect />
-        {children}
+        <FavouritesProvider signedIn={favourites.signedIn} initialIds={favourites.ids}>
+          {children}
+        </FavouritesProvider>
       </body>
     </html>
   );

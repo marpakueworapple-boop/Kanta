@@ -183,6 +183,22 @@ export async function getProduct(slug: string): Promise<ProductDetail | null> {
   };
 }
 
+/** Specific listings by id (used by Favourites). Sold-out pieces are included; removed ones are not. */
+export async function getListingsByIds(ids: string[]): Promise<Listing[]> {
+  if (!configured() || ids.length === 0) return [];
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("product_listings")
+    .select(LISTING_COLUMNS)
+    .in("id", ids.slice(0, 200))
+    .in("status", ["active", "sold_out"]);
+  if (error) {
+    console.error("getListingsByIds", error.message);
+    return [];
+  }
+  return (data as unknown as Row[]).map(toListing);
+}
+
 /** Other pieces from the same top-level category. */
 export async function getRelated(p: Listing, limit = 4): Promise<Listing[]> {
   const { items } = await searchListings({ category: p.category.topSlug, sort: "newest" }, limit + 1);

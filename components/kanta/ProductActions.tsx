@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useFavourite } from "./Favourites";
 import { Icon } from "./icons";
 
 /**
@@ -9,17 +10,21 @@ import { Icon } from "./icons";
   The bag itself arrives in Phase 4, so for now the button confirms the size and explains that.
 */
 export function ProductActions({
+  productId,
+  title,
   variants,
   soldOut,
   madeToOrderDays,
 }: {
+  productId: string;
+  title: string;
   variants: { size: string; stock: number }[];
   soldOut: boolean;
   madeToOrderDays: number | null;
 }) {
   const single = variants.length === 1 ? variants[0] : null;
   const [size, setSize] = useState<string | null>(single && single.stock > 0 ? single.size : null);
-  const [saved, setSaved] = useState(false);
+  const { saved, toggle } = useFavourite(productId, title);
   const [message, setMessage] = useState<string | null>(null);
 
   function addToBag() {
@@ -93,7 +98,7 @@ export function ProductActions({
         </button>
         <button
           type="button"
-          onClick={() => setSaved((s) => !s)}
+          onClick={toggle}
           aria-pressed={saved}
           aria-label={saved ? "Remove from favourites" : "Save to favourites"}
           className={`flex size-[52px] shrink-0 items-center justify-center rounded-full border border-line bg-white transition hover:border-forest/40 ${

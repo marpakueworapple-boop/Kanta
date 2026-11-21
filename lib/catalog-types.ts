@@ -5,6 +5,8 @@ export type Condition = "new" | "like_new" | "excellent" | "good" | "fair";
 
 /** What a product card needs. */
 export type CardProduct = {
+  /** Product id (uuid) — used to save favourites. */
+  id: string;
   slug: string;
   title: string;
   shopName: string;
@@ -19,7 +21,6 @@ export type CardProduct = {
 };
 
 export type Listing = CardProduct & {
-  id: string;
   description: string | null;
   brand: string | null;
   condition: Condition;

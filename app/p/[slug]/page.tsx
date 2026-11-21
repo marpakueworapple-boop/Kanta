@@ -115,6 +115,8 @@ export default async function ProductPage({ params }: Props) {
             )}
 
             <ProductActions
+              productId={product.id}
+              title={product.title}
               variants={product.variants}
               soldOut={product.soldOut}
               madeToOrderDays={product.madeToOrderDays}

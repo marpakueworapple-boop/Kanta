@@ -2,14 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 import { type CardProduct, sellerBadge } from "@/lib/catalog-types";
 import { formatGHS } from "@/lib/format";
+import { useFavourite } from "./Favourites";
 import { Icon } from "./icons";
 
 /** Card/Product — one card for every seller type. Tapping the photo or name opens the product page. */
 export function ProductCard({ product, priority = false }: { product: CardProduct; priority?: boolean }) {
-  const [saved, setSaved] = useState(false);
+  const { saved, toggle } = useFavourite(product.id, product.title);
   const b = sellerBadge[product.sellerType];
   const href = `/p/${product.slug}`;
 
@@ -40,7 +40,7 @@ export function ProductCard({ product, priority = false }: { product: CardProduc
         )}
         <button
           type="button"
-          onClick={() => setSaved((s) => !s)}
+          onClick={toggle}
           aria-pressed={saved}
           aria-label={saved ? `Remove ${product.title} from favourites` : `Save ${product.title} to favourites`}
           className={`absolute top-2.5 right-2.5 flex size-8 items-center justify-center rounded-full bg-white/90 transition active:scale-90 ${

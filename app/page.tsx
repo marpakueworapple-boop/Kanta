@@ -6,7 +6,7 @@ import { HomeBody } from "@/components/kanta/HomeFeed";
 import { SearchBar } from "@/components/kanta/SearchBar";
 import { SectionHeader } from "@/components/kanta/SectionHeader";
 import { TrustCard } from "@/components/kanta/TrustCard";
-import { sampleProducts } from "@/lib/sample-data";
+import { getLatestListings } from "@/lib/catalog";
 import { createClient } from "@/lib/supabase/server";
 
 const categories = [
@@ -35,7 +35,7 @@ async function getFirstName(): Promise<string | null> {
 }
 
 export default async function HomePage() {
-  const firstName = await getFirstName();
+  const [firstName, latest] = await Promise.all([getFirstName(), getLatestListings(24)]);
 
   return (
     <AppShell>
@@ -62,7 +62,7 @@ export default async function HomePage() {
       </div>
 
       <HomeBody
-        products={sampleProducts}
+        products={latest}
         middle={
           <>
             <div className="k-container pt-6 md:pt-8">

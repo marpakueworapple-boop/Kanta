@@ -1,55 +1,43 @@
 /*
-  Sample products for Stage 1. In Stage 2 these come from the Supabase database instead.
-  The three products match the approved Figma homepage exactly.
+  Static example products, used only by the /design-system page so it works
+  even without a database connection. Real pages read from Supabase (lib/catalog.ts).
 */
-import type { StaticImageData } from "next/image";
-import denimJacket from "@/public/images/denim-jacket.jpg";
-import kenteShirt from "@/public/images/kente-linen-shirt.jpg";
-import saddleBag from "@/public/images/saddle-bag.jpg";
+import type { CardProduct } from "./catalog-types";
 
-export type SellerType = "thrift" | "boutique" | "designer";
+export type { SellerType } from "./catalog-types";
 
-export type Product = {
-  id: string;
-  name: string;
-  seller: string;
-  sellerType: SellerType;
-  /** Price in pesewas (1 GH₵ = 100 pesewas) so money maths never has rounding errors. */
-  pricePesewas: number;
-  currency: "GHS";
-  meta: string;
-  image: StaticImageData;
-};
-
-export const sampleProducts: Product[] = [
+export const sampleProducts: CardProduct[] = [
   {
-    id: "vintage-washed-denim-jacket",
-    name: "Vintage Washed Denim Jacket",
-    seller: "Kantamanto Finds",
+    slug: "vintage-washed-denim-jacket",
+    title: "Vintage Washed Denim Jacket",
+    shopName: "Kantamanto Finds",
     sellerType: "thrift",
     pricePesewas: 28000,
-    currency: "GHS",
-    meta: "Size L",
-    image: denimJacket,
+    compareAtPesewas: null,
+    coverUrl: "/images/products/vintage-washed-denim-jacket.jpg",
+    sizeLabel: "Size L",
+    soldOut: false,
   },
   {
-    id: "kente-trim-linen-shirt",
-    name: "Kente-Trim Linen Shirt",
-    seller: "Studio Adinkra",
+    slug: "kente-trim-linen-shirt",
+    title: "Kente-Trim Linen Shirt",
+    shopName: "Studio Adinkra",
     sellerType: "designer",
     pricePesewas: 65000,
-    currency: "GHS",
-    meta: "S – XL",
-    image: kenteShirt,
+    compareAtPesewas: null,
+    coverUrl: "/images/products/kente-trim-linen-shirt.jpg",
+    sizeLabel: "S – XL",
+    soldOut: false,
   },
   {
-    id: "tan-leather-saddle-bag",
-    name: "Tan Leather Saddle Bag",
-    seller: "Osu Boutique",
+    slug: "tan-leather-saddle-bag",
+    title: "Tan Leather Saddle Bag",
+    shopName: "Osu Boutique",
     sellerType: "boutique",
     pricePesewas: 42000,
-    currency: "GHS",
-    meta: "One size",
-    image: saddleBag,
+    compareAtPesewas: null,
+    coverUrl: "/images/products/tan-leather-saddle-bag.jpg",
+    sizeLabel: "One size",
+    soldOut: false,
   },
 ];

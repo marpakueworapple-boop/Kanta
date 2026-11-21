@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { Product, SellerType } from "@/lib/sample-data";
+import type { CardProduct, SellerType } from "@/lib/catalog-types";
 import { Chip } from "./Chip";
 import { ProductCard } from "./ProductCard";
 import { SectionHeader } from "./SectionHeader";
@@ -35,7 +35,7 @@ export function SellerTypeChips({ value, onChange }: { value: Filter; onChange: 
   Home body: chips → (hero + categories, rendered on the server) → Fresh finds.
   The chips and the product grid share one "filter" value.
 */
-export function HomeBody({ products, middle }: { products: Product[]; middle: React.ReactNode }) {
+export function HomeBody({ products, middle }: { products: CardProduct[]; middle: React.ReactNode }) {
   const [filter, setFilter] = useState<Filter>("all");
   return (
     <>
@@ -50,14 +50,18 @@ export function HomeBody({ products, middle }: { products: Product[]; middle: Re
   );
 }
 
-/** Product grid: 2 columns on phones, 3 on tablets, 4 on laptops and desktops. */
-export function FreshFinds({ products, filter }: { products: Product[]; filter: Filter }) {
-  const shown = filter === "all" ? products : products.filter((p) => p.sellerType === filter);
+/**
+  Product grid: 2 columns on phones, 3 on tablets, 4 on laptops and desktops.
+  Shows the 3 newest matching pieces plus the "Sell on Kanta" card, as in the approved design.
+*/
+export function FreshFinds({ products, filter }: { products: CardProduct[]; filter: Filter }) {
+  const shown = (filter === "all" ? products : products.filter((p) => p.sellerType === filter)).slice(0, 3);
+  const seeAll = filter === "all" ? "/explore" : `/explore?type=${filter}`;
 
   return (
     <section aria-labelledby="fresh-finds" className="flex flex-col gap-4 md:gap-6">
       <div id="fresh-finds">
-        <SectionHeader title="Fresh finds" />
+        <SectionHeader title="Fresh finds" href={seeAll} />
       </div>
       <div className="grid grid-cols-2 gap-x-2 gap-y-6 md:grid-cols-3 md:gap-x-5 md:gap-y-10 lg:grid-cols-4 lg:gap-x-6">
         {shown.map((p, i) => (

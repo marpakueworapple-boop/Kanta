@@ -47,7 +47,16 @@ function IconLink({
   - Tablets: adds the search bar and a profile button; the header stays at the top while scrolling.
   - Laptops: adds main links, a "Sell" button and a category bar underneath.
 */
-export function Header({ bagCount = 0, hasUnread = false }: { bagCount?: number; hasUnread?: boolean }) {
+export function Header({
+  bagCount = 0,
+  hasUnread = false,
+  query,
+}: {
+  bagCount?: number;
+  hasUnread?: boolean;
+  /** Current search words, shown in the header search box (tablets and laptops). */
+  query?: string;
+}) {
   const pathname = usePathname();
 
   return (
@@ -58,7 +67,7 @@ export function Header({ bagCount = 0, hasUnread = false }: { bagCount?: number;
         </Link>
 
         <div className="hidden min-w-0 flex-1 md:block lg:max-w-[440px] xl:max-w-[520px]">
-          <SearchBar compact />
+          <SearchBar compact defaultValue={query} />
         </div>
 
         <nav aria-label="Main" className="hidden items-center gap-6 lg:flex">
@@ -67,7 +76,7 @@ export function Header({ bagCount = 0, hasUnread = false }: { bagCount?: number;
               key={l.href}
               href={l.href}
               className={`t-label whitespace-nowrap transition hover:text-forest ${
-                pathname === l.href ? "text-forest" : "text-ink"
+                pathname === l.href.split("?")[0] && l.href === "/explore" ? "text-forest" : "text-ink"
               }`}
             >
               {l.label}

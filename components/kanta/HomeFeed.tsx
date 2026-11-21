@@ -65,7 +65,7 @@ export function FreshFinds({ products, filter }: { products: CardProduct[]; filt
       </div>
       <div className="grid grid-cols-2 gap-x-2 gap-y-6 md:grid-cols-3 md:gap-x-5 md:gap-y-10 lg:grid-cols-4 lg:gap-x-6">
         {shown.map((p, i) => (
-          <ProductCard key={p.id} product={p} priority={i < 2} />
+          <ProductCard key={p.slug} product={p} priority={i < 2} />
         ))}
         <SellPromoCard />
       </div>

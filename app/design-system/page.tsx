@@ -122,7 +122,7 @@ export default function DesignSystemPage() {
             </div>
             <div className="grid max-w-[360px] grid-cols-2 gap-2">
               {sampleProducts.map((p) => (
-                <ProductCard key={p.id} product={p} />
+                <ProductCard key={p.slug} product={p} />
               ))}
               <SellPromoCard />
             </div>
